@@ -1,13 +1,13 @@
 import React from 'react'
-import BoxResults from './BoxResults';
+import TableResults from './TableResults';
 
-const OwenResult = ({ sex, weight }: { sex: any, weight: any }) => {
+const OwenResult = ({ sex, weight }: { sex: String, weight: any }) => {
     const geb = () => {
         return sex === 'masc' ? 879 + (10.2 * weight) :
             sex === 'fem' ? 795 + (7.18 * weight) : 0.0
     }
     return (
-        <BoxResults title={'Owen'} geb={geb()} isHarris={false} />
+        <TableResults title={'Owen'} geb={geb()} isHarris={false} />
     )
 }
 export default OwenResult

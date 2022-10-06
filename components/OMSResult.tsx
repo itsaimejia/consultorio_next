@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxResults from './BoxResults';
+import TableResults from './TableResults';
 
 const OMSResult = ({ sex, weight, height }: { sex: any, weight: any, height: any, }) => {
     const geb = () => {
@@ -7,7 +7,7 @@ const OMSResult = ({ sex, weight, height }: { sex: any, weight: any, height: any
             sex === 'fem' ? (8.7 * weight) - (25 * height) + 865 : 0.0
     }
     return (
-        <BoxResults title={'OMS'} geb={geb()} isHarris={false} />
+        <TableResults title={'OMS'} geb={geb()} isHarris={false} />
     )
 }
 export default OMSResult

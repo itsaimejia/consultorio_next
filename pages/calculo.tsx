@@ -6,14 +6,14 @@ import OMSResult from '../components/OMSResult';
 import { useState } from 'react';
 import ValenciaResult from '../components/ValenciaResult';
 import OwenResult from '../components/OwenResult';
+import { fasValues } from '../values/faValues';
 
 const Calculo = () => {
 
     const [weight, setWeight] = useState(50)
-    const [height, setHeight] = useState(1.0)
+    const [height, setHeight] = useState(1.5)
     const [age, setAge] = useState(18)
     const [sex, setSex] = useState('fem')
-    const [geb, setGeb] = useState(0.0)
 
     return (
         <Stack>

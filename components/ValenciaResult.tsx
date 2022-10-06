@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxResults from './BoxResults';
+import TableResults from './TableResults';
 
 const ValenciaResult = ({ sex, weight, age }: { sex: any, weight: any, age: any }) => {
     const geb = () => {
@@ -7,7 +7,7 @@ const ValenciaResult = ({ sex, weight, age }: { sex: any, weight: any, age: any 
             sex === 'fem' ? ((age <= 29) ? (11.02 * weight) + 679 : (age <= 59) ? (10.92 * weight) + 677 : (10.98 * weight) + 520) : 0.0
     }
     return (
-        <BoxResults title={'Valencia'} geb={geb()} isHarris={false} />
+        <TableResults title={'Valencia'} geb={geb()} isHarris={false} />
     )
 }
 export default ValenciaResult

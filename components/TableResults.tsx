@@ -1,8 +1,7 @@
 import { Box, Container, Divider, Group, Paper, Space, Table, Text } from '@mantine/core'
 import { fasValues } from '../values/faValues'
 
-const BoxResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris: any }) => {
-
+const TableResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris: any }) => {
     const rows = fasValues.map((value) => (
         <tr key={value.fa}>
             <td>{value.fa}</td>
@@ -11,13 +10,8 @@ const BoxResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris: 
             <td>{(value.value * parseFloat(geb) + (isHarris === true ? parseFloat(geb) * 0.10 : 0)).toFixed(2)}</td>
         </tr>
     ))
-
-
-
     return (
-
         <Box sx={{ maxWidth: 600 }} mx="auto" >
-
             <Paper shadow="xs" radius="md" p="lg" withBorder>
                 <Text weight={700}>{title}</Text>
                 <Space h="xs" />
@@ -40,4 +34,4 @@ const BoxResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris: 
     )
 }
 
-export default BoxResults
+export default TableResults

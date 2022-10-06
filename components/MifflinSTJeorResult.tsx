@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxResults from './BoxResults';
+import TableResults from './TableResults';
 
 const MiffilSTJeorResult = ({ sex, weight, height, age }: { sex: any, weight: any, height: any, age: any }) => {
     const geb = () => {
@@ -7,7 +7,7 @@ const MiffilSTJeorResult = ({ sex, weight, height, age }: { sex: any, weight: an
             sex === 'fem' ? (10 * weight) + (6.25 * height * 100) - (5 * age) - 161 : 0.0
     }
     return (
-        <BoxResults title={'Miffil ST-Jeor'} geb={geb()} isHarris={false} />
+        <TableResults title={'Miffil ST-Jeor'} geb={geb()} isHarris={false} />
     )
 }
 export default MiffilSTJeorResult
