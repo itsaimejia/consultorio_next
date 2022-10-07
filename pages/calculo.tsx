@@ -1,15 +1,10 @@
 
-import { Box, Button, Center, Divider, Group, NumberInput, Paper, SegmentedControl, Space, Stack, Tabs, Text } from '@mantine/core';
-import HarrisBenedictResult from '../components/HarrisBenedictResult';
-import MifflinSTJeorResult from '../components/MifflinSTJeorResult';
-import OMSResult from '../components/OMSResult';
+import { Box, Center, Divider, Group, NumberInput, Paper, SegmentedControl, Space, Tabs, Text } from '@mantine/core';
 import { useState } from 'react';
-import ValenciaResult from '../components/ValenciaResult';
-import OwenResult from '../components/OwenResult';
-import { fasValues } from '../values/faValues';
-import { IconPercentage, IconScale, IconScaleOutline } from '@tabler/icons';
+import { IconPercentage, IconScaleOutline } from '@tabler/icons';
 import TablePerGKg from '../components/TablePerGKg';
 import TablePerPercentage from '../components/TablePerPercentage';
+import { getFormula } from '../values/formulas';
 
 const Calculo = () => {
 
@@ -17,8 +12,11 @@ const Calculo = () => {
     const [height, setHeight] = useState(1.5)
     const [age, setAge] = useState(18)
     const [sex, setSex] = useState('fem')
-    const [activityFactor, setActivityFactor] = useState('SEDENTARIO')
+    const [factor, setFactor] = useState('SEDENTARIO')
     const [formula, setFormula] = useState('harris-benedict')
+    const [kc, setKc] = useState(0)
+
+    const calculateKc = () => setKc(parseFloat(getFormula({ factor, sex, weight, height, age, formula }).toFixed(2)))
 
     return (
         <Group position="center" spacing="xs" grow>
@@ -32,7 +30,10 @@ const Calculo = () => {
                     <SegmentedControl
                         fullWidth
                         value={sex}
-                        onChange={setSex}
+                        onChange={(v) => {
+                            setSex(v)
+                            calculateKc()
+                        }}
                         data={[
                             { label: 'FEM', value: 'fem' },
                             { label: 'MASC', value: 'masc' },
@@ -42,19 +43,28 @@ const Calculo = () => {
                     <NumberInput label='Peso (Kgs)' value={weight} min={3}
                         stepHoldDelay={500}
                         stepHoldInterval={100}
-                        onChange={(val) => setWeight(val ?? 0)} />
+                        onChange={(val) => {
+                            setWeight(val ?? 0)
+                            calculateKc()
+                        }} />
                     <NumberInput label='Estatura (Mts)' value={height} precision={2}
                         min={0.50}
                         step={0.01}
                         max={2.5}
                         stepHoldDelay={500}
-                        stepHoldInterval={100} onChange={(val) => setHeight(val ?? 0)} />
+                        stepHoldInterval={100} onChange={(val) => {
+                            setHeight(val ?? 0)
+                            calculateKc()
+                        }} />
                     <NumberInput label='Edad' stepHoldDelay={500} stepHoldInterval={100} min={18} value={age} onChange={(val) => setAge(val ?? 0)} />
                     <Text weight={500}>Factor actividad:</Text>
                     <SegmentedControl
                         fullWidth
-                        value={activityFactor}
-                        onChange={setActivityFactor}
+                        value={factor}
+                        onChange={(v) => {
+                            setFactor(v)
+                            calculateKc()
+                        }}
                         data={[
                             { label: 'SEDENTARIO', value: 'SEDENTARIO' },
                             { label: 'LIGERO', value: 'LIGERO' },
@@ -68,7 +78,10 @@ const Calculo = () => {
                     <SegmentedControl
                         fullWidth
                         value={formula}
-                        onChange={setFormula}
+                        onChange={(v) => {
+                            setFormula(v)
+                            calculateKc()
+                        }}
                         data={[
                             { label: 'Harris-Benedict', value: 'harris-benedict' },
                             { label: 'Mifflin ST-Jeor', value: 'mifflin' },
@@ -89,7 +102,7 @@ const Calculo = () => {
                     </Tabs.List>
 
                     <Tabs.Panel value="per-percentage" pt="xs">
-                        <TablePerPercentage sex={sex} weight={weight} height={height} age={age} factor={activityFactor} formula={formula} />
+                        <TablePerPercentage weight={weight} kc={kc} />
                     </Tabs.Panel>
 
                     <Tabs.Panel value="per-gKg" pt="xs">
