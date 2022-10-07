@@ -11,17 +11,18 @@ const Busqueda = ({ data }: { data: any }) => {
     const [openedFoodDataModal, setOpenedFoodDataModal] = useState(false)
 
     const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.code === "Enter") {
+        console.log(event.code)
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
             setListNames(getFoodNames())
         }
     }
-    
     const getFoodNames = () => data.filter((e: any) => e.Alimento.toLowerCase().includes(name.toLowerCase()))
 
     const showData = (e: any) => {
         setOpenedFoodDataModal(!openedFoodDataModal)
         setFood(e)
     }
+
     return (
         <Stack>
             <Input

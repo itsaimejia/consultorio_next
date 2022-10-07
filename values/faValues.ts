@@ -1,10 +1,12 @@
-import { arrayBuffer } from "stream/consumers";
+export const fasValues = {
+    'SEDENTARIO': 1.2,
+    'LIGERO': 1.3,
+    'MODERADO': 1.5,
+    'ACTIVO': 1.7,
+    'VIGOROSO': 1.9
+}
 
-export const fasValues = [
-    { fa: 'SEDENTARIO', value: 1.2, },
-    { fa: 'LIGERO', value: 1.3 },
-    { fa: 'MODERADO', value: 1.5 },
-    { fa: 'ACTIVO', value: 1.7 },
-    { fa: 'VIGOROSO', value: 1.9 },
-];
+
+
+
 

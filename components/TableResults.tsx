@@ -2,14 +2,14 @@ import { Box, Container, Divider, Group, Paper, Space, Table, Text } from '@mant
 import { fasValues } from '../values/faValues'
 
 const TableResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris: any }) => {
-    const rows = fasValues.map((value) => (
-        <tr key={value.fa}>
-            <td>{value.fa}</td>
-            <td>{geb.toFixed(2)}</td>
-            <td>{(value.value * parseFloat(geb)).toFixed(2)}</td>
-            <td>{(value.value * parseFloat(geb) + (isHarris === true ? parseFloat(geb) * 0.10 : 0)).toFixed(2)}</td>
-        </tr>
-    ))
+    // const rows = fasValues.map((value) => (
+    //     <tr key={value.fa}>
+    //         <td>{value.fa}</td>
+    //         <td>{geb.toFixed(2)}</td>
+    //         <td>{(value.value * parseFloat(geb)).toFixed(2)}</td>
+    //         <td>{(value.value * parseFloat(geb) + (isHarris === true ? parseFloat(geb) * 0.10 : 0)).toFixed(2)}</td>
+    //     </tr>
+    // ))
     return (
         <Box sx={{ maxWidth: 600 }} mx="auto" >
             <Paper shadow="xs" radius="md" p="lg" withBorder>
@@ -27,7 +27,7 @@ const TableResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris
                             <th>GET</th>
                         </tr>
                     </thead>
-                    <tbody>{rows}</tbody>
+                    {/* <tbody>{rows}</tbody> */}
                 </Table>
             </Paper>
         </Box>

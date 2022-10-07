@@ -1,9 +1,8 @@
 import { Modal, Table } from "@mantine/core"
-import { Food } from "../models/Food"
-import { titleHeader } from '../values/header_smae';
 
 const FoodDataDescription = ({ opened, setOpened, food }: { opened: boolean, setOpened: any, food: any }) => {
 
+    const { AzucarPorEquivalenteG, Calciomg, Cantidad, Carbohidratos, Categoría } = food
     return (
         <Modal
             opened={opened}
@@ -25,23 +24,23 @@ const FoodDataDescription = ({ opened, setOpened, food }: { opened: boolean, set
                 <tbody>
                     <tr>
                         <td>Azucar Por Equivalente G</td>
-                        <td>{food.AzucarPorEquivalenteG}</td>
+                        <td>{AzucarPorEquivalenteG}</td>
                     </tr>
                     <tr>
                         <td>Calcio mg</td>
-                        <td>{food.Calciomg}</td>
+                        <td>{Calciomg}</td>
                     </tr>
                     <tr>
                         <td>Cantidad</td>
-                        <td>{food.Cantidad}</td>
+                        <td>{Cantidad}</td>
                     </tr>
                     <tr>
                         <td>Carbohidratos</td>
-                        <td>{food.Carbohidratos}</td>
+                        <td>{Carbohidratos}</td>
                     </tr>
                     <tr>
                         <td>Categoría</td>
-                        <td>{food.Categoría}</td>
+                        <td>{Categoría}</td>
                     </tr>
                 </tbody>
             </Table>
