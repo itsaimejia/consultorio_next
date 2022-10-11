@@ -1,16 +1,25 @@
 import { Box, Divider, Input, NumberInput, Paper, Space, Stack, Table, Text } from '@mantine/core'
 import { useState } from 'react';
-import { getFormula } from '../values/formulas';
+import { getGET } from '../values/formulas';
 
 
-const TablePerPercentage = ({ kc, weight }: { kc: any, weight: any }) => {
+const TablePerPercentage = ({ sex, weight, height, age, factor, formula }: { sex: any, weight: any, height: any, age: any, factor: any, formula: any }) => {
     const [percentageProtein, setPercentageProtein] = useState(1)
     const [percentageLipids, setPercentageLipids] = useState(1)
     const [percentageCarbohydrates, setPercentageCarbohydrates] = useState(1)
-    const [sumPercentage, setSumPercentage] = useState(percentageProtein + percentageLipids + percentageCarbohydrates)
+
+
+    const kc = () => getGET({ factor, sex, weight, height, age, formula })
+    const kcProtein = () => kc() * percentageProtein / 100
+    const kcLipids = () => kc() * percentageLipids / 100
+    const kcCarbohydrates = () => kc() * percentageCarbohydrates / 100
+
+    const sumPercentage = () => percentageProtein + percentageLipids + percentageCarbohydrates
+
+    const showValue = (f: any) => sumPercentage() === 100 ? f.toFixed(2) : '---'
 
     return (
-        <Stack spacing="xs">
+        <Stack>
             <Box sx={{ maxWidth: 600 }} mx="auto" >
                 <Paper shadow="xs" radius="md" p="lg" withBorder>
                     <Text weight={700}>Por porcentaje</Text>
@@ -38,18 +47,14 @@ const TablePerPercentage = ({ kc, weight }: { kc: any, weight: any }) => {
                                     step={1}
                                     onChange={(val: any) => {
                                         setPercentageProtein(val)
-                                        setSumPercentage(val + percentageLipids + percentageCarbohydrates)
                                     }} /></td>
-                                <td><Text sx={{ maxWidth: 100, minWidth: 100 }}>{sumPercentage === 100 ? (kc * percentageProtein / 100).toFixed(2) : '---'}</Text></td>
-                                <td><Text sx={{ maxWidth: 100, minWidth: 100 }}>{sumPercentage === 100 ? (kc * percentageProtein / 100 / 4).toFixed(2) : '---'}</Text></td>
-                                <td><Text sx={{ maxWidth: 50, minWidth: 50 }}>{sumPercentage === 100 ? (kc * percentageProtein / 100 / 4 / weight).toFixed(2) : '---'}</Text></td>
-
-
+                                <td><Text sx={{ maxWidth: 100, minWidth: 100 }}>{showValue(kcProtein())}</Text></td>
+                                <td><Text sx={{ maxWidth: 100, minWidth: 100 }}>{showValue(kcProtein() / 4)}</Text></td>
+                                <td><Text sx={{ maxWidth: 50, minWidth: 50 }}>{showValue(kcProtein() / 4 / weight)}</Text></td>
                             </tr>
                             <tr>
                                 <td>Lípidos</td>
                                 <td><NumberInput value={percentageLipids} min={1}
-                                    contentEditable={false}
                                     variant="filled" sx={{ maxWidth: 100, minWidth: 100 }}
                                     stepHoldDelay={500}
                                     stepHoldInterval={100}
@@ -57,11 +62,10 @@ const TablePerPercentage = ({ kc, weight }: { kc: any, weight: any }) => {
                                     step={1}
                                     onChange={(val: any) => {
                                         setPercentageLipids(val)
-                                        setSumPercentage(percentageProtein + val + percentageCarbohydrates)
                                     }} /></td>
-                                <td>{sumPercentage === 100 ? (kc * percentageLipids / 100).toFixed(2) : '---'}</td>
-                                <td>{sumPercentage === 100 ? (kc * percentageLipids / 100 / 9).toFixed(2) : '---'}</td>
-                                <td>{sumPercentage === 100 ? (kc * percentageLipids / 100 / 9 / weight).toFixed(2) : '---'}</td>
+                                <td>{showValue(kcLipids())}</td>
+                                <td>{showValue(kcLipids() / 9)}</td>
+                                <td>{showValue(kcLipids() / 9 / weight)}</td>
                             </tr>
                             <tr>
                                 <td>Carbohidratos</td>
@@ -73,22 +77,21 @@ const TablePerPercentage = ({ kc, weight }: { kc: any, weight: any }) => {
                                     step={1}
                                     onChange={(val: any) => {
                                         setPercentageCarbohydrates(val)
-                                        setSumPercentage(percentageProtein + percentageLipids + val)
                                     }} /></td>
-                                <td>{sumPercentage === 100 ? (kc * percentageCarbohydrates / 100).toFixed(2) : '---'}</td>
-                                <td>{sumPercentage === 100 ? (kc * percentageCarbohydrates / 100 / 4).toFixed(2) : '---'}</td>
-                                <td>{sumPercentage === 100 ? (kc * percentageCarbohydrates / 100 / 4 / weight).toFixed(2) : '---'}</td>
+                                <td>{showValue(kcCarbohydrates())}</td>
+                                <td>{showValue(kcCarbohydrates() / 4)}</td>
+                                <td>{showValue(kcCarbohydrates() / 4 / weight)}</td>
                             </tr>
                             <tr>
                                 <td>Total</td>
-                                <td><Text color={(sumPercentage) === 100 ? 'black' : 'red'}>{sumPercentage}%</Text></td>
-                                <td>{kc}</td>
+                                <td><Text color={(sumPercentage()) === 100 ? 'black' : 'red'}>{sumPercentage()}</Text></td>
+                                <td>{kc().toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </Table>
                 </Paper>
             </Box>
-            <Text color={'red'} size="sm" hidden={sumPercentage === 100}>Ingresa el 100% de porcentaje para ver los resultados</Text>
+            <Text color={'red'} size="sm" hidden={sumPercentage() === 100}>Ingresa el 100% de porcentaje para ver los resultados</Text>
         </Stack>
     )
 }

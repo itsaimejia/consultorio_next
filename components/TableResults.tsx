@@ -1,5 +1,5 @@
 import { Box, Container, Divider, Group, Paper, Space, Table, Text } from '@mantine/core'
-import { fasValues } from '../values/faValues'
+import { faValues } from '../values/faValues'
 
 const TableResults = ({ title, geb, isHarris }: { title: any, geb: any, isHarris: any }) => {
     // const rows = fasValues.map((value) => (

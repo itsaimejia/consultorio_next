@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { IconPercentage, IconScaleOutline } from '@tabler/icons';
 import TablePerGKg from '../components/TablePerGKg';
 import TablePerPercentage from '../components/TablePerPercentage';
-import { getFormula } from '../values/formulas';
 
 const Calculo = () => {
 
@@ -12,15 +11,12 @@ const Calculo = () => {
     const [height, setHeight] = useState(1.5)
     const [age, setAge] = useState(18)
     const [sex, setSex] = useState('fem')
-    const [factor, setFactor] = useState('SEDENTARIO')
+    const [activityFactor, setActivityFactor] = useState('SEDENTARIO')
     const [formula, setFormula] = useState('harris-benedict')
-    const [kc, setKc] = useState(0)
-
-    const calculateKc = () => setKc(parseFloat(getFormula({ factor, sex, weight, height, age, formula }).toFixed(2)))
 
     return (
         <Group position="center" spacing="xs" grow>
-            <Box sx={{ maxWidth: 600 }} >
+            <Box sx={{ maxWidth: 500 }} >
                 <Paper shadow="xs" radius="md" p="lg" withBorder>
                     <Text weight={700}>Información</Text>
                     <Space h="xs" />
@@ -30,10 +26,7 @@ const Calculo = () => {
                     <SegmentedControl
                         fullWidth
                         value={sex}
-                        onChange={(v) => {
-                            setSex(v)
-                            calculateKc()
-                        }}
+                        onChange={setSex}
                         data={[
                             { label: 'FEM', value: 'fem' },
                             { label: 'MASC', value: 'masc' },
@@ -43,28 +36,19 @@ const Calculo = () => {
                     <NumberInput label='Peso (Kgs)' value={weight} min={3}
                         stepHoldDelay={500}
                         stepHoldInterval={100}
-                        onChange={(val) => {
-                            setWeight(val ?? 0)
-                            calculateKc()
-                        }} />
+                        onChange={(val) => setWeight(val ?? 0)} />
                     <NumberInput label='Estatura (Mts)' value={height} precision={2}
                         min={0.50}
                         step={0.01}
                         max={2.5}
                         stepHoldDelay={500}
-                        stepHoldInterval={100} onChange={(val) => {
-                            setHeight(val ?? 0)
-                            calculateKc()
-                        }} />
+                        stepHoldInterval={100} onChange={(val) => setHeight(val ?? 0)} />
                     <NumberInput label='Edad' stepHoldDelay={500} stepHoldInterval={100} min={18} value={age} onChange={(val) => setAge(val ?? 0)} />
                     <Text weight={500}>Factor actividad:</Text>
                     <SegmentedControl
                         fullWidth
-                        value={factor}
-                        onChange={(v) => {
-                            setFactor(v)
-                            calculateKc()
-                        }}
+                        value={activityFactor}
+                        onChange={setActivityFactor}
                         data={[
                             { label: 'SEDENTARIO', value: 'SEDENTARIO' },
                             { label: 'LIGERO', value: 'LIGERO' },
@@ -78,10 +62,7 @@ const Calculo = () => {
                     <SegmentedControl
                         fullWidth
                         value={formula}
-                        onChange={(v) => {
-                            setFormula(v)
-                            calculateKc()
-                        }}
+                        onChange={setFormula}
                         data={[
                             { label: 'Harris-Benedict', value: 'harris-benedict' },
                             { label: 'Mifflin ST-Jeor', value: 'mifflin' },
@@ -93,25 +74,24 @@ const Calculo = () => {
                     />
                 </Paper>
             </Box>
-            <Center>
+
+            <Box sx={{ maxWidth: 500 }}>
                 <Tabs variant="outline" defaultValue="per-percentage">
                     <Tabs.List>
                         <Tabs.Tab value="per-percentage" icon={<IconPercentage size={14} />}>Por porcentage</Tabs.Tab>
                         <Tabs.Tab value="per-gKg" icon={<IconScaleOutline size={14} />} >Por g/Kg</Tabs.Tab>
-
                     </Tabs.List>
 
                     <Tabs.Panel value="per-percentage" pt="xs">
-                        <TablePerPercentage weight={weight} kc={kc} />
+                        <TablePerPercentage sex={sex} weight={weight} height={height} age={age} factor={activityFactor} formula={formula} />
                     </Tabs.Panel>
 
                     <Tabs.Panel value="per-gKg" pt="xs">
-                        <TablePerGKg />
+                        <TablePerGKg sex={sex} weight={weight} height={height} age={age} factor={activityFactor} formula={formula} />
                     </Tabs.Panel>
-
-
                 </Tabs>
-            </Center>
+            </Box>
+
         </Group>
 
 

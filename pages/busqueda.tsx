@@ -1,22 +1,23 @@
 import { Input, Stack, Box, Divider, Paper, Table, Button } from '@mantine/core';
 import { IconSearch } from '@tabler/icons';
-import React from 'react'
 import { useState } from 'react';
 import FoodDataDescription from '../components/FoodDataDescription';
 
 const Busqueda = ({ data }: { data: any }) => {
     const [name, setName] = useState('')
     const [food, setFood] = useState(Object)
-    const [listNames, setListNames] = useState([])
+    const [listFoods, setListFoods] = useState([])
     const [openedFoodDataModal, setOpenedFoodDataModal] = useState(false)
 
     const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
         console.log(event.code)
         if (event.code === "Enter" || event.code === "NumpadEnter") {
-            setListNames(getFoodNames())
+            if (name.trim().length > 0) {
+                setListFoods(getFoodsData())
+            }
         }
     }
-    const getFoodNames = () => data.filter((e: any) => e.Alimento.toLowerCase().includes(name.toLowerCase()))
+    const getFoodsData = () => data.filter((e: any) => e.Alimento.toLowerCase().includes(name.toLowerCase()))
 
     const showData = (e: any) => {
         setOpenedFoodDataModal(!openedFoodDataModal)
@@ -45,7 +46,7 @@ const Busqueda = ({ data }: { data: any }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listNames.map((e: any) => (
+                            {listFoods.map((e: any) => (
                                 <tr key={e.Alimento}>
                                     <td>{e.Alimento}</td>
                                     <td><Button onClick={() => showData(e)}>Ver más</Button></td>

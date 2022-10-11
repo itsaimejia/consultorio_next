@@ -1,4 +1,4 @@
-export const fasValues = {
+export const faValues = {
     'SEDENTARIO': 1.2,
     'LIGERO': 1.3,
     'MODERADO': 1.5,
