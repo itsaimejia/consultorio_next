@@ -2,15 +2,26 @@ import { Input, Stack, Box, Divider, Paper, Table, Button } from '@mantine/core'
 import { IconSearch } from '@tabler/icons';
 import { useState } from 'react';
 import FoodDataDescription from '../components/FoodDataDescription';
-
-const Busqueda = ({ data }: { data: any }) => {
+import { localStorageMethods } from '../classes/localStorageMethods';
+const Busqueda = () => {
+    const getDataTable = async () => {
+        let json = localStorageMethods.getItem('table_food')
+        if (localStorageMethods.getItem('table_food') === undefined) {
+            const url = 'https://food-4eb80-default-rtdb.firebaseio.com//SMAE.json'
+            const res = await fetch(url)
+            json = await res.json()
+            localStorageMethods.setItem('table_food', json)
+        }
+        localStorageMethods.setItem('table_food', json)
+    }
+    getDataTable()
+    const data = localStorageMethods.getItem('table_food')
     const [name, setName] = useState('')
     const [food, setFood] = useState(Object)
     const [listFoods, setListFoods] = useState([])
     const [openedFoodDataModal, setOpenedFoodDataModal] = useState(false)
 
     const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        console.log(event.code)
         if (event.code === "Enter" || event.code === "NumpadEnter") {
             if (name.trim().length > 0) {
                 setListFoods(getFoodsData())
@@ -59,17 +70,6 @@ const Busqueda = ({ data }: { data: any }) => {
             </Box>
         </Stack>
     )
-}
-
-export async function getServerSideProps() {
-    const url = 'https://food-4eb80-default-rtdb.firebaseio.com//SMAE.json'
-    const res = await fetch(url)
-    const json = await res.json()
-    return {
-        props: {
-            data: json
-        }
-    }
 }
 
 export default Busqueda

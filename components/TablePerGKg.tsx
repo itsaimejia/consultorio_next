@@ -78,7 +78,7 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
                             <tr>
                                 <td>Total</td>
                                 <td>{verifyIsNaN(percentageCarbohydrates() + percentageLipids() + percentageProtein())}</td>
-                                <td>{kc().toFixed(2)}</td>
+                                <td>{verifyIsNaN(kc())}</td>
                             </tr>
                         </tbody>
                     </Table>
