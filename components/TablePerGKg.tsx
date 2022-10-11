@@ -17,14 +17,6 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
     const kcCarbohydrates = () => kc() - (kcProtein() + kcLipids())
     const verifyIsNaN = (f: any) => isNaN(f) ? '---' : f.toFixed(2)
 
-    function verifiIsNaN(f:any){
-        if(isNaN(f)){
-            return '---'
-        }else{
-            return f.toFixed(2)
-        }
-    }
-
     return (
         <Stack>
             <Box sx={{ maxWidth: 600 }} mx="auto" >
