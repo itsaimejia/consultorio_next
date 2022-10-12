@@ -1,9 +1,18 @@
 import { Header, Title } from "@mantine/core"
+import { useAuth } from "../context/AuthContext"
 const CustomHeader = () => {
-    return <Header height={55} pl="md">
-        <Title>Consultorio</Title>
+    const { user } = useAuth()
+    return <>{
+        user ? (
+            <Header height={55} pl="md">
+                <Title>Consultorio</Title>
 
-    </Header>
+            </Header>
+        ) : (null
+        )
+    } </>
+
+
 }
 
 export default CustomHeader
