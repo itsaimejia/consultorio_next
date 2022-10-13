@@ -1,12 +1,11 @@
-import { Button, Center, createStyles, Divider, Space, Stack, Title, TextInput, Group, Text, Anchor, PasswordInput } from '@mantine/core'
+import { Button, Center, createStyles, Divider, Space, Stack, Title, Input, Group, Text, Anchor, PasswordInput, TextInput } from '@mantine/core'
+import { useForm } from '@mantine/form';
 import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler/icons';
+import { useRouter } from 'next/router';
 import React from 'react'
 import { useAuth } from '../context/AuthContext';
-import { useState } from 'react';
-import { useForm } from '@mantine/form';
-import router, { useRouter } from 'next/router'
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme, getRef) => ({
     container: {
         margin: 0,
         padding: 0,
@@ -14,7 +13,7 @@ const useStyles = createStyles(() => ({
         height: '100%'
     },
     form: {
-        height: 480,
+        height: 410,
         width: 400,
         backgroundColor: 'rgba(155, 150, 150, 0.13)',
         position: 'absolute',
@@ -25,15 +24,14 @@ const useStyles = createStyles(() => ({
         backdropFilter: 'blur(10)',
         border: '2 solid rgba(255,255,255,0.1)',
         boxShadow: '0 0 40 rgba(8,7,16,0.6)',
-        padding: '50px 35px'
+        padding: '20px 35px'
 
     },
 }));
+const SingUp = () => {
 
-
-const Login = () => {
     const router = useRouter()
-    const { user, login, logout } = useAuth()
+    const { user, login, logout, createUser } = useAuth()
     const form = useForm({
         initialValues: {
             email: '',
@@ -45,10 +43,10 @@ const Login = () => {
         },
     });
 
-    const handleLogin = async (e: any) => {
+    const handleRegister = async (e: any) => {
 
         try {
-            const res = await login(form.values.email, form.values.password)
+            const res = await createUser(form.values.email, form.values.password)
             console.log(res)
             router.push('/')
 
@@ -61,11 +59,11 @@ const Login = () => {
     const { classes } = useStyles();
     return <div className={classes.container}>
         <div className={classes.form}>
-            <form onSubmit={(e) => handleLogin(e)}>
+            <form onSubmit={(e) => handleRegister(e)}>
                 <Stack>
                     <Center><Title order={3} sx={(theme) => ({
                         color: theme.colorScheme === 'dark' ? 'white' : 'black',
-                    })}>Iniciar sesión</Title></Center>
+                    })}>Crear nueva cuenta</Title></Center>
                     <Divider />
                     <Space />
                     <TextInput
@@ -79,24 +77,9 @@ const Login = () => {
                     />
                     <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
                     <Space />
-                    <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleLogin(e)}>
-                        Ingresar
+                    <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
+                        Registrar
                     </Text></Button>
-                    <Group position="apart" grow mb={5}>
-                        <Button color={'red'} leftIcon={<IconBrandGmail />}>Gmail</Button>
-                        <Button leftIcon={<IconBrandFacebook />}>Facebook</Button>
-                    </Group>
-                    <Anchor<'a'>
-                        href="#"
-                        onClick={(event) => event.preventDefault()}
-                        sx={(theme) => ({
-                            paddingTop: 2,
-                            color: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
-                            fontWeight: 500,
-                            fontSize: theme.fontSizes.xs,
-                        })}>
-                        ¿Olvidaste tu contraseña?
-                    </Anchor>
                 </Stack>
             </form>
 
@@ -104,4 +87,4 @@ const Login = () => {
     </div>
 }
 
-export default Login
+export default SingUp

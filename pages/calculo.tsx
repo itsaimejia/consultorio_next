@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { IconPercentage, IconScaleOutline } from '@tabler/icons';
 import TablePerGKg from '../components/TablePerGKg';
 import TablePerPercentage from '../components/TablePerPercentage';
+import { useAuth } from '../context/AuthContext';
 
 const Calculo = () => {
 

@@ -24,10 +24,9 @@ const useStyles = createStyles((theme) => ({
 interface UserButtonProps extends UnstyledButtonProps {
     image: string;
     name: string;
-    email: string;
 }
 
-export function UserButton({ image, name, email, ...others }: UserButtonProps) {
+export function UserButton({ image, name, ...others }: UserButtonProps) {
     const { user, logout } = useAuth()
     const { classes } = useStyles();
 
@@ -38,12 +37,7 @@ export function UserButton({ image, name, email, ...others }: UserButtonProps) {
                 <Text size="sm" weight={500}>
                     {name}
                 </Text>
-
-                <Text color="dimmed" size="xs">
-                    {email}
-                </Text>
             </div>
-
         </Group>
     </UnstyledButton>
 }

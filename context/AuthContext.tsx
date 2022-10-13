@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../config/firebase';
-import { localStorageMethods } from '../classes/localStorageMethods';
+import Home from '../pages';
+import { LoadingOverlay } from '@mantine/core';
 
 const AuthContext = createContext<any>({})
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -30,10 +31,13 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
     const logout = async () => {
         setUser(null)
-        localStorageMethods.setItem('user', { 'status': '' })
         await signOut(auth)
     }
-    return <AuthContext.Provider value={{ user, login, logout }}>{loading ? null : children}</AuthContext.Provider>
+
+    const createUser = async (email: string, password: string) => {
+        return createUserWithEmailAndPassword(auth, email, password)
+    }
+    return <AuthContext.Provider value={{ user, login, logout, createUser }}>{user === null ? (loading ? <LoadingOverlay visible={loading} overlayBlur={2} /> : <Home />) : children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)
