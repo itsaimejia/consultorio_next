@@ -1,5 +1,5 @@
 
-import { Box, Center, Divider, Group, NumberInput, Paper, SegmentedControl, Space, Tabs, Text } from '@mantine/core';
+import { Box, Center, Divider, Group, NumberInput, Paper, SegmentedControl, Space, Stack, Tabs, Text } from '@mantine/core';
 import { useState } from 'react';
 import { IconPercentage, IconScaleOutline } from '@tabler/icons';
 import TablePerGKg from '../components/TablePerGKg';
@@ -16,7 +16,7 @@ const Calculo = () => {
     const [formula, setFormula] = useState('harris-benedict')
 
     return (
-        <Group position="center" spacing="xs" grow>
+        <Stack spacing="xl" >
             <Box sx={{ maxWidth: 500 }} >
                 <Paper shadow="xs" radius="md" p="lg" withBorder>
                     <Text weight={700}>Información</Text>
@@ -29,8 +29,8 @@ const Calculo = () => {
                         value={sex}
                         onChange={setSex}
                         data={[
-                            { label: 'FEM', value: 'fem' },
-                            { label: 'MASC', value: 'masc' },
+                            { label: 'Femenino', value: 'fem' },
+                            { label: 'Masculino', value: 'masc' },
 
                         ]}
                     />
@@ -51,11 +51,11 @@ const Calculo = () => {
                         value={activityFactor}
                         onChange={setActivityFactor}
                         data={[
-                            { label: 'SEDENTARIO', value: 'SEDENTARIO' },
-                            { label: 'LIGERO', value: 'LIGERO' },
-                            { label: 'MODERADO', value: 'MODERADO' },
-                            { label: 'ACTIVO', value: 'ACTIVO' },
-                            { label: 'VIGOROSO', value: 'VIGOROSO' },
+                            { label: 'Sedentario', value: 'SEDENTARIO' },
+                            { label: 'Ligero', value: 'LIGERO' },
+                            { label: 'Moderado', value: 'MODERADO' },
+                            { label: 'Activo', value: 'ACTIVO' },
+                            { label: 'Vigoroso', value: 'VIGOROSO' },
 
                         ]}
                     />
@@ -93,7 +93,7 @@ const Calculo = () => {
                 </Tabs>
             </Box>
 
-        </Group>
+        </Stack>
 
 
 

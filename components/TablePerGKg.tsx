@@ -39,10 +39,10 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
                             <tr>
                                 <td>Proteinas</td>
 
-                                <td><Text sx={{ maxWidth: 50, minWidth: 50 }}> {verifyIsNaN(percentageProtein())} </Text></td>
-                                <td><Text sx={{ maxWidth: 100, minWidth: 100 }}>{verifyIsNaN(kcProtein())}</Text></td>
-                                <td> <Text sx={{ maxWidth: 100, minWidth: 100 }}>{verifyIsNaN(gramProtein())}</Text> </td>
-                                <td><NumberInput variant="filled" sx={{ maxWidth: 100, minWidth: 100 }}
+                                <td><Text sx={{ maxWidth: 50 }}> {verifyIsNaN(percentageProtein())} </Text></td>
+                                <td><Text sx={{ maxWidth: 50 }}>{verifyIsNaN(kcProtein())}</Text></td>
+                                <td> <Text sx={{ maxWidth: 50 }}>{verifyIsNaN(gramProtein())}</Text> </td>
+                                <td><NumberInput variant="filled" sx={{ maxWidth: 65 }}
                                     value={gKgProtein}
                                     stepHoldDelay={500}
                                     stepHoldInterval={100}
@@ -58,7 +58,7 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
                                 <td> {verifyIsNaN(percentageLipids())} </td>
                                 <td>{verifyIsNaN(kcLipids())}</td>
                                 <td> {verifyIsNaN(gramLipids())} </td>
-                                <td><NumberInput variant="filled" sx={{ minWidth: 100, maxWidth: 100 }}
+                                <td><NumberInput variant="filled" sx={{ maxWidth: 65 }}
                                     value={gKgLipids}
                                     stepHoldDelay={500}
                                     stepHoldInterval={100}
