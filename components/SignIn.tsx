@@ -3,7 +3,8 @@ import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
-import { useRouter } from 'next/router'
+import { useForm } from '@mantine/form'
+import router, { useRouter } from 'next/router'
 import SingUp from './SignUp';
 
 const useStyles = createStyles(() => ({
@@ -36,11 +37,26 @@ const SingIn = () => {
     const { user, login, logout } = useAuth()
     const { classes } = useStyles()
     const [register, setRegister] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const form = useForm({
+        initialValues: {
+            email: '',
+            password: ''
+        },
 
+        validate: {
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Correo invalido (correo@ejemplo.com)'),
+            password: (value) => (value.trim().length >= 5 ? null : 'Debe ser mayor a 5 caracteres')
+        },
+    });
+
+    /**
+     * 
+     * @param e: event
+     */
     const handleLogin = async (e: any) => {
-        await login(email, password).then((result: any) => {
+        form.validate()
+        await login(form.values.email, form.values.password).then((result: any) => {
             console.log(result)
             router.push('/')
         }).catch((err: any) => {
@@ -60,19 +76,16 @@ const SingIn = () => {
                         <Divider />
                         <Space />
                         <TextInput
-                            onChange={(event) => setEmail(event.currentTarget.value)}
-                            label='Correo'
+                            label='Ingresa tu correo'
                             withAsterisk
                             icon={<IconAt />}
-                            placeholder="Correo"
+                            placeholder="correo@ejemplo.com"
                             radius="xs"
                             size="md"
+                            {...form.getInputProps('email')}
                         />
-                        <PasswordInput
+                        <PasswordInput label='Ingresa una contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
 
-                            label='Contraseña'
-                            withAsterisk
-                            icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" onChange={(event) => setPassword(event.currentTarget.value)} />
                         <Space />
                         <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleLogin(e)}>
                             Ingresar

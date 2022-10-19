@@ -35,7 +35,6 @@ const SingUp = () => {
     const router = useRouter()
     const { user, login, logout, createUser } = useAuth()
     const [backToSignin, setBackToSignin] = useState(false)
-    const [messageError, setMessageError] = useState(['', ''])
     const form = useForm({
         initialValues: {
             email: '',
@@ -43,23 +42,26 @@ const SingUp = () => {
         },
 
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Correo invalido (correo@ejemplo.com)'),
+            password: (value) => (value.trim().length >= 5 ? null : 'Debe ser mayor a 5 caracteres')
         },
     });
 
     const handleRegister = async (e: any) => {
+        form.validate()
         try {
             const res = await createUser(form.values.email, form.values.password)
             console.log(res)
             router.push('/')
 
-
         } catch (err: any) {
             console.log(Object.values(err)[0])
+            console.log(form.errors)
         }
     }
 
-    const { classes } = useStyles();
+    const { classes } = useStyles()
+
     return <>
         {backToSignin ? (<SingIn />) : (<div className={classes.container}>
             <div className={classes.form}>
@@ -71,17 +73,17 @@ const SingUp = () => {
                         <Divider />
                         <Space />
                         <TextInput
-                            label='Correo'
+                            label='Ingresa un correo'
                             withAsterisk
                             icon={<IconAt />}
-                            placeholder="Correo"
+                            placeholder="correo@ejemplo.com"
                             radius="xs"
                             size="md"
                             {...form.getInputProps('email')}
                         />
-                        <PasswordInput error={messageError} label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
+                        <PasswordInput label='Ingresa una contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
                         <Space />
-                        <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
+                        <Button color={'green'} onClick={(e) => handleRegister(e)}><Text size="sm" weight={500} >
                             Registrar
                         </Text></Button>
                         <Button type='submit' color={'red'}><Text size="sm" weight={500} onClick={() => setBackToSignin(true)}>
