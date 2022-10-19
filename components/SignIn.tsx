@@ -3,8 +3,7 @@ import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
-import { useForm } from '@mantine/form'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import SingUp from './SignUp';
 
 const useStyles = createStyles(() => ({

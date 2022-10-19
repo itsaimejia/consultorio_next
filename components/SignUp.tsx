@@ -35,52 +35,60 @@ const SingUp = () => {
     const router = useRouter()
     const { user, login, logout, createUser } = useAuth()
     const [backToSignin, setBackToSignin] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [messageError, setMessageError] = useState(['', ''])
+    const form = useForm({
+        initialValues: {
+            email: '',
+            password: ''
+        },
+
+        validate: {
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+        },
+    });
 
     const handleRegister = async (e: any) => {
         try {
-            const res = await createUser(email, password)
+            const res = await createUser(form.values.email, form.values.password)
             console.log(res)
             router.push('/')
+
+
         } catch (err: any) {
             console.log(Object.values(err)[0])
         }
     }
+
     const { classes } = useStyles();
     return <>
         {backToSignin ? (<SingIn />) : (<div className={classes.container}>
             <div className={classes.form}>
-                <Stack>
-                    <Center><Title order={3} sx={(theme) => ({
-                        color: theme.colorScheme === 'dark' ? 'white' : 'black',
-                    })}>Crear nueva cuenta</Title></Center>
-                    <Divider />
-                    <Space />
-                    <TextInput
-                        onChange={(event) => setEmail(event.currentTarget.value)}
-                        label='Correo'
-                        withAsterisk
-                        icon={<IconAt />}
-                        placeholder="Correo"
-                        radius="xs"
-                        size="md"
-
-                    />
-                    <PasswordInput
-                        onChange={(event) => setPassword(event.currentTarget.value)}
-                        label='Contraseña'
-                        withAsterisk
-                        icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" />
-                    <Space />
-                    <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
-                        Registrar
-                    </Text></Button>
-                    <Button color={'red'}><Text size="sm" weight={500} onClick={() => setBackToSignin(true)}>
-                        Regresar
-                    </Text></Button>
-                </Stack>
-
+                <form onClick={(e) => handleRegister(e)}>
+                    <Stack>
+                        <Center><Title order={3} sx={(theme) => ({
+                            color: theme.colorScheme === 'dark' ? 'white' : 'black',
+                        })}>Crear nueva cuenta</Title></Center>
+                        <Divider />
+                        <Space />
+                        <TextInput
+                            label='Correo'
+                            withAsterisk
+                            icon={<IconAt />}
+                            placeholder="Correo"
+                            radius="xs"
+                            size="md"
+                            {...form.getInputProps('email')}
+                        />
+                        <PasswordInput error={messageError} label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
+                        <Space />
+                        <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
+                            Registrar
+                        </Text></Button>
+                        <Button type='submit' color={'red'}><Text size="sm" weight={500} onClick={() => setBackToSignin(true)}>
+                            Regresar
+                        </Text></Button>
+                    </Stack>
+                </form>
 
             </div>
         </div>)}
