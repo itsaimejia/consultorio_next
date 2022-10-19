@@ -3,6 +3,7 @@ import { IconSearch } from '@tabler/icons';
 import { useState } from 'react';
 import FoodDataDescription from '../components/FoodDataDescription';
 import { localStorageMethods } from '../classes/localStorageMethods';
+import { Layout } from '../components/Layout';
 const Busqueda = () => {
     const getDataTable = async () => {
         let json = localStorageMethods.getItem('table_food')
@@ -36,39 +37,41 @@ const Busqueda = () => {
     }
 
     return (
-        <Stack>
-            <Input
-                sx={{ minWidth: 600 }} mx="auto"
-                icon={<IconSearch />}
-                placeholder="Nombre de alimento"
-                radius="md"
-                value={name}
-                onChange={(event) => setName(event.currentTarget.value)}
-                onKeyPress={keyDownHandler}
-            />
-            <Divider />
-            <Box sx={{ minWidth: 600 }} mx="auto" >
-                <Paper radius="md" p="lg" withBorder >
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Alimento</th>
-                                <th>Ver detalles</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listFoods.map((e: any) => (
-                                <tr key={e.Alimento}>
-                                    <td>{e.Alimento}</td>
-                                    <td><Button onClick={() => showData(e)}>Ver más</Button></td>
+        <Layout>
+            <Stack>
+                <Input
+                    sx={{ minWidth: 600 }} mx="auto"
+                    icon={<IconSearch />}
+                    placeholder="Nombre de alimento"
+                    radius="md"
+                    value={name}
+                    onChange={(event) => setName(event.currentTarget.value)}
+                    onKeyPress={keyDownHandler}
+                />
+                <Divider />
+                <Box sx={{ minWidth: 600 }} mx="auto" >
+                    <Paper radius="md" p="lg" withBorder >
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>Alimento</th>
+                                    <th>Ver detalles</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                    <FoodDataDescription opened={openedFoodDataModal} setOpened={setOpenedFoodDataModal} food={food} />
-                </Paper>
-            </Box>
-        </Stack>
+                            </thead>
+                            <tbody>
+                                {listFoods.map((e: any) => (
+                                    <tr key={e.Alimento}>
+                                        <td>{e.Alimento}</td>
+                                        <td><Button onClick={() => showData(e)}>Ver más</Button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                        <FoodDataDescription opened={openedFoodDataModal} setOpened={setOpenedFoodDataModal} food={food} />
+                    </Paper>
+                </Box>
+            </Stack>
+        </Layout>
     )
 }
 

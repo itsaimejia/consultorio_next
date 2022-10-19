@@ -55,6 +55,12 @@ const SingIn = () => {
         },
     });
 
+    const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
+            handleLogin()
+        }
+    }
+
     const handleLogin = async () => {
         if (!form.validate().hasErrors) {
             await login(form.values.email.toLowerCase(), form.values.password).then((result: any) => {
@@ -90,9 +96,10 @@ const SingIn = () => {
                             placeholder="correo@dominio.com"
                             radius="xs"
                             size="md"
+                            onKeyPress={keyDownHandler}
                             {...form.getInputProps('email')}
                         />
-                        <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Ingresa una contraseña" {...form.getInputProps('password')} />
+                        <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Ingresa una contraseña" {...form.getInputProps('password')} onKeyPress={keyDownHandler} />
 
                         <Space />
                         {error.trim().length === 0 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Error al ingresar" color="red">
