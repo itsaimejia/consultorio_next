@@ -37,24 +37,11 @@ const SingIn = () => {
     const { user, login, logout } = useAuth()
     const { classes } = useStyles()
     const [register, setRegister] = useState(false)
-    const [error, setError] = useState('')
-    const form = useForm({
-        initialValues: {
-            email: '',
-            password: ''
-        },
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-        validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-        },
-    });
-
-    /**
-     * 
-     * @param e: event
-     */
     const handleLogin = async (e: any) => {
-        await login(form.values.email, form.values.password).then((result: any) => {
+        await login(email, password).then((result: any) => {
             console.log(result)
             router.push('/')
         }).catch((err: any) => {
@@ -66,7 +53,7 @@ const SingIn = () => {
     return <>
         {register ? (<SingUp />) : (<div className={classes.container}>
             <div className={classes.form}>
-                <form onSubmit={(e) => handleLogin(e)}>
+                <form onClick={(e) => handleLogin(e)}>
                     <Stack>
                         <Center><Title order={3} sx={(theme) => ({
                             color: theme.colorScheme === 'dark' ? 'white' : 'black',
@@ -74,20 +61,19 @@ const SingIn = () => {
                         <Divider />
                         <Space />
                         <TextInput
-                            error={error}
+                            onChange={(event) => setEmail(event.currentTarget.value)}
                             label='Correo'
                             withAsterisk
                             icon={<IconAt />}
                             placeholder="Correo"
                             radius="xs"
                             size="md"
-                            {...form.getInputProps('email')}
                         />
                         <PasswordInput
 
                             label='Contraseña'
                             withAsterisk
-                            icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
+                            icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" onChange={(event) => setPassword(event.currentTarget.value)} />
                         <Space />
                         <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleLogin(e)}>
                             Ingresar

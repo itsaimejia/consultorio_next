@@ -4,6 +4,8 @@ import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useAuth } from '../context/AuthContext';
+import SingIn from './SignIn';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme, getRef) => ({
     container: {
@@ -32,34 +34,23 @@ const SingUp = () => {
 
     const router = useRouter()
     const { user, login, logout, createUser } = useAuth()
-    const form = useForm({
-        initialValues: {
-            email: '',
-            password: ''
-        },
-
-        validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-        },
-    });
+    const [backToSignin, setBackToSignin] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleRegister = async (e: any) => {
-
         try {
-            const res = await createUser(form.values.email, form.values.password)
+            const res = await createUser(email, password)
             console.log(res)
             router.push('/')
-
-
-        } catch (err) {
-            console.log(err)
+        } catch (err: any) {
+            console.log(Object.values(err)[0])
         }
-
     }
     const { classes } = useStyles();
-    return <div className={classes.container}>
-        <div className={classes.form}>
-            <form onSubmit={(e) => handleRegister(e)}>
+    return <>
+        {backToSignin ? (<SingIn />) : (<div className={classes.container}>
+            <div className={classes.form}>
                 <Stack>
                     <Center><Title order={3} sx={(theme) => ({
                         color: theme.colorScheme === 'dark' ? 'white' : 'black',
@@ -67,24 +58,33 @@ const SingUp = () => {
                     <Divider />
                     <Space />
                     <TextInput
+                        onChange={(event) => setEmail(event.currentTarget.value)}
                         label='Correo'
                         withAsterisk
                         icon={<IconAt />}
                         placeholder="Correo"
                         radius="xs"
                         size="md"
-                        {...form.getInputProps('email')}
+
                     />
-                    <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
+                    <PasswordInput
+                        onChange={(event) => setPassword(event.currentTarget.value)}
+                        label='Contraseña'
+                        withAsterisk
+                        icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" />
                     <Space />
                     <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
                         Registrar
                     </Text></Button>
+                    <Button color={'red'}><Text size="sm" weight={500} onClick={() => setBackToSignin(true)}>
+                        Regresar
+                    </Text></Button>
                 </Stack>
-            </form>
 
-        </div>
-    </div>
+
+            </div>
+        </div>)}
+    </>
 }
 
 export default SingUp
