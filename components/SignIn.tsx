@@ -66,7 +66,7 @@ const SingIn = () => {
     return <>
         {register ? (<SingUp />) : (<div className={classes.container}>
             <div className={classes.form}>
-                <form onSubmit={(e) => handleLogin(e)}>
+                <form onClick={(e) => handleLogin(e)}>
                     <Stack>
                         <Center><Title order={3} sx={(theme) => ({
                             color: theme.colorScheme === 'dark' ? 'white' : 'black',
@@ -89,7 +89,7 @@ const SingIn = () => {
                             withAsterisk
                             icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
                         <Space />
-                        <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleLogin(e)}>
+                        <Button color={'green'}><Text size="sm" weight={500} onClick={(e: any) => handleLogin(e)}>
                             Ingresar
                         </Text></Button>
                         <Group position="apart" grow mb={5}>

@@ -44,7 +44,6 @@ const SingUp = () => {
     });
 
     const handleRegister = async (e: any) => {
-
         try {
             const res = await createUser(form.values.email, form.values.password)
             console.log(res)
@@ -59,7 +58,7 @@ const SingUp = () => {
     const { classes } = useStyles();
     return <div className={classes.container}>
         <div className={classes.form}>
-            <form onSubmit={(e) => handleRegister(e)}>
+            <form onClick={(e) => handleRegister(e)}>
                 <Stack>
                     <Center><Title order={3} sx={(theme) => ({
                         color: theme.colorScheme === 'dark' ? 'white' : 'black',
@@ -77,7 +76,7 @@ const SingUp = () => {
                     />
                     <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
                     <Space />
-                    <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
+                    <Button color={'green'} onClick={(e: any) => handleRegister(e)}><Text size="sm" weight={500} >
                         Registrar
                     </Text></Button>
                 </Stack>
