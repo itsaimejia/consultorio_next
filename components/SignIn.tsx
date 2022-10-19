@@ -1,11 +1,12 @@
-import { Button, Center, createStyles, Divider, Space, Stack, Title, TextInput, Group, Text, Anchor, PasswordInput } from '@mantine/core'
-import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler/icons';
+import { Button, Center, createStyles, Divider, Space, Stack, Title, TextInput, Group, Text, Anchor, PasswordInput, Alert, Notification } from '@mantine/core'
+import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook, IconAlertCircle } from '@tabler/icons';
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
 import { useForm } from '@mantine/form'
 import router, { useRouter } from 'next/router'
 import SingUp from './SignUp';
+import ResePasswordDialog from './ResetPasswordDialog';
 
 const useStyles = createStyles(() => ({
     container: {
@@ -15,7 +16,6 @@ const useStyles = createStyles(() => ({
         height: '100%'
     },
     form: {
-        height: 510,
         width: 400,
         backgroundColor: 'rgba(155, 150, 150, 0.13)',
         position: 'absolute',
@@ -38,6 +38,7 @@ const SingIn = () => {
     const { classes } = useStyles()
     const [register, setRegister] = useState(false)
     const [error, setError] = useState('')
+    const [resetPassword, setResetPassword] = useState(false)
     const form = useForm({
         initialValues: {
             email: '',
@@ -45,30 +46,37 @@ const SingIn = () => {
         },
 
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Correo invalido (correo@ejemplo.com)'),
-            password: (value) => (value.trim().length >= 5 ? null : 'Debe ser mayor a 5 caracteres')
+            email: (value) => ((/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(value) && value.trim().length != 0) ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa un correo válido" color="red" radius="md" variant="outline">
+                {'Ejemplo: correo@dominio.com'}
+            </Alert>)),
+            password: (value) => (value.trim().length >= 5 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa una contraseña" color="red" radius="md" variant="outline">
+                El campo no puede estar vacio
+            </Alert>))
         },
     });
 
-    /**
-     * 
-     * @param e: event
-     */
-    const handleLogin = async (e: any) => {
-        form.validate()
-        await login(form.values.email, form.values.password).then((result: any) => {
-            console.log(result)
-            router.push('/')
-        }).catch((err: any) => {
-            console.log(err)
+    const handleLogin = async () => {
+        if (!form.validate().hasErrors) {
+            await login(form.values.email.toLowerCase(), form.values.password).then((result: any) => {
+                console.log(result)
+                router.push('/')
+            }).catch((err: any) => {
+                console.log(Object.values(err)[0])
+                if (Object.values(err)[0] === 'auth/wrong-password') {
+                    setError('Contraseña incorrecta')
 
-        });
+                }
+                if (Object.values(err)[0] === 'auth/user-not-found') {
+                    setError('Usuario no encontrado')
+                }
+            });
+        }
     }
 
     return <>
         {register ? (<SingUp />) : (<div className={classes.container}>
             <div className={classes.form}>
-                <form onClick={(e) => handleLogin(e)}>
+                <form onSubmit={(e) => e.preventDefault()}>
                     <Stack>
                         <Center><Title order={3} sx={(theme) => ({
                             color: theme.colorScheme === 'dark' ? 'white' : 'black',
@@ -76,37 +84,36 @@ const SingIn = () => {
                         <Divider />
                         <Space />
                         <TextInput
-                            label='Ingresa tu correo'
+                            label='Correo'
                             withAsterisk
                             icon={<IconAt />}
-                            placeholder="correo@ejemplo.com"
+                            placeholder="correo@dominio.com"
                             radius="xs"
                             size="md"
                             {...form.getInputProps('email')}
                         />
-                        <PasswordInput label='Ingresa una contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
+                        <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Ingresa una contraseña" {...form.getInputProps('password')} />
 
                         <Space />
-                        <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleLogin(e)}>
+                        {error.trim().length === 0 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Error al ingresar" color="red">
+                            {error}
+                        </Alert>)}
+                        <Button color={'green'} onClick={() => handleLogin()}><Text size="sm" weight={500}>
                             Ingresar
                         </Text></Button>
                         <Group position="apart" grow mb={5}>
                             <Button disabled color={'red'} leftIcon={<IconBrandGmail />}>Gmail</Button>
                             <Button disabled leftIcon={<IconBrandFacebook />}>Facebook</Button>
                         </Group>
-                        <Anchor<'a'>
-                            href="#"
-                            onClick={(event) => event.preventDefault()}
-                            sx={(theme) => ({
-                                paddingTop: 2,
-                                color: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
-                                fontWeight: 500,
-                                fontSize: theme.fontSizes.xs,
-                            })}>
-                            ¿Olvidaste tu contraseña?
-                        </Anchor>
+
+                        {error.includes('Contraseña') ? (<Notification title="Olvidaste tu contraseña?" onClose={() => setResetPassword(false)}>
+                            <Button variant="subtle" radius="xs" size="xs" disabled compact onClick={() => setResetPassword(true)}>
+                                Recuperar contraseña
+                            </Button>
+                        </Notification>) : null}
+
                         <Divider />
-                        <Button color={'blue'}><Text size="sm" weight={500} onClick={() => setRegister(true)}>
+                        <Button color={'blue'} onClick={() => setRegister(true)}><Text size="sm" weight={500} >
                             Crear nueva cuenta
                         </Text></Button>
                     </Stack>
