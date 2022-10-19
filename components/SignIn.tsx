@@ -49,8 +49,8 @@ const SingIn = () => {
             email: (value) => ((/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(value) && value.trim().length != 0) ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa un correo válido" color="red" radius="md" variant="outline">
                 {'Ejemplo: correo@dominio.com'}
             </Alert>)),
-            password: (value) => (value.trim().length >= 5 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa una contraseña" color="red" radius="md" variant="outline">
-                El campo no puede estar vacio
+            password: (value) => (value.trim().length >= 5 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa una contraseña válida" color="red" radius="md" variant="outline">
+                Debe incluir mínimo 5 carácteres
             </Alert>))
         },
     });
