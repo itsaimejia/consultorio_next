@@ -45,7 +45,7 @@ const Busqueda = () => {
                     placeholder="Nombre de alimento"
                     radius="md"
                     value={name}
-                    onChange={(event) => setName(event.currentTarget.value)}
+                    onChange={(event: any) => setName(event.currentTarget.value)}
                     onKeyPress={keyDownHandler}
                 />
                 <Divider />

@@ -7,13 +7,29 @@ const TablePerPercentage = ({ sex, weight, height, age, factor, formula }: { sex
     const [percentageProtein, setPercentageProtein] = useState(1)
     const [percentageLipids, setPercentageLipids] = useState(1)
 
-
+    /**
+   * `kc()` returns the total calories, `kcProtein()` returns the calories from protein, `kcLipids()`
+   * returns the calories from lipids, and `kcCarbohydrates()` returns the calories from
+   * carbohydrates
+   */
 
     const kc = () => getGET({ factor, sex, weight, height, age, formula })
     const kcProtein = () => kc() * percentageProtein / 100
     const kcLipids = () => kc() * percentageLipids / 100
     const kcCarbohydrates = () => kc() * percentageCarbohydrates() / 100
-
+    /**
+   * "If the percentage of protein is greater than 98, then set the percentage of protein to 98,
+   * otherwise set the percentage of protein to the percentage of protein. If the percentage of
+   * lipids is greater than 98, then set the percentage of lipids to 98, otherwise set the percentage
+   * of lipids to the percentage of lipids. Return 100 minus the percentage of protein plus the
+   * percentage of lipids."
+   * 
+   * I'm not sure what the point of this function is. It seems to be a convoluted way of saying "If
+   * the percentage of protein is greater than 98, then set the percentage of protein to 98. If the
+   * percentage of lipids is greater than 98, then set the percentage of lipids to 98. Return 100
+   * minus the percentage of protein plus the percentage of lipids."
+   * @returns The percentage of carbohydrates in the food.
+   */
     const percentageCarbohydrates = () => {
         const perProtein = percentageProtein > 98 ? 98 : percentageProtein
         const perLipids = percentageLipids > 98 ? 98 : percentageLipids
