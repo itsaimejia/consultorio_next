@@ -60,7 +60,7 @@ const SingIn = () => {
             handleLogin()
         }
     }
-
+ 
     const handleLogin = async () => {
         if (!form.validate().hasErrors) {
             await login(form.values.email.toLowerCase(), form.values.password).then((result: any) => {

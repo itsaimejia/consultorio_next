@@ -18,7 +18,7 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
     const verifyIsNaN = (f: any) => isNaN(f) ? '---' : f.toFixed(2)
 
     return (
-        <Stack>
+        
             <Box sx={{ maxWidth: 600 }} mx="auto" >
                 <Paper shadow="xs" radius="md" p="lg" withBorder>
                     <Text weight={700}>Por g/Kg</Text>
@@ -84,7 +84,7 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
                     </Table>
                 </Paper>
             </Box>
-        </Stack>
+    
     )
 }
 
