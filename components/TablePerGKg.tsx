@@ -6,6 +6,12 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
 
     const [gKgProtein, setGKgProtein] = useState(0.1)
     const [gKgLipids, setGKgLipids] = useState(0.1)
+
+    /**
+   * `kc()` returns the total calories, `kcProtein()` returns the calories from protein, `kcLipids()`
+   * returns the calories from lipids, and `kcCarbohydrates()` returns the calories from
+   * carbohydrates
+   */
     const kc = () => getGET({ factor, sex, weight, height, age, formula })
     const gramProtein = () => weight * gKgProtein
     const gramLipids = () => weight * gKgLipids
@@ -18,73 +24,73 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
     const verifyIsNaN = (f: any) => isNaN(f) ? '---' : f.toFixed(2)
 
     return (
-        <Stack>
-            <Box sx={{ maxWidth: 600 }} mx="auto" >
-                <Paper shadow="xs" radius="md" p="lg" withBorder>
-                    <Text weight={700}>Por g/Kg</Text>
-                    <Space h="xs" />
-                    <Divider />
-                    <Space h="sm" />
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Macronutrientes</th>
-                                <th>%</th>
-                                <th>Kcal</th>
-                                <th>g</th>
-                                <th>g/Kg</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Proteinas</td>
 
-                                <td><Text sx={{ maxWidth: 50, minWidth: 50 }}> {verifyIsNaN(percentageProtein())} </Text></td>
-                                <td><Text sx={{ maxWidth: 100, minWidth: 100 }}>{verifyIsNaN(kcProtein())}</Text></td>
-                                <td> <Text sx={{ maxWidth: 100, minWidth: 100 }}>{verifyIsNaN(gramProtein())}</Text> </td>
-                                <td><NumberInput variant="filled" sx={{ maxWidth: 100, minWidth: 100 }}
-                                    value={gKgProtein}
-                                    stepHoldDelay={500}
-                                    stepHoldInterval={100}
-                                    precision={2}
-                                    min={0.01}
-                                    step={0.01}
-                                    onChange={(val: any) => { setGKgProtein(val) }}
-                                /></td>
-                            </tr>
-                            <tr>
-                                <td>Lipidos</td>
+        <Box sx={{ maxWidth: 600 }} mx="auto" >
+            <Paper shadow="xs" radius="md" p="lg" withBorder>
+                <Text weight={700}>Por g/Kg</Text>
+                <Space h="xs" />
+                <Divider />
+                <Space h="sm" />
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Macronutrientes</th>
+                            <th>%</th>
+                            <th>Kcal</th>
+                            <th>g</th>
+                            <th>g/Kg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Proteinas</td>
 
-                                <td> {verifyIsNaN(percentageLipids())} </td>
-                                <td>{verifyIsNaN(kcLipids())}</td>
-                                <td> {verifyIsNaN(gramLipids())} </td>
-                                <td><NumberInput variant="filled" sx={{ minWidth: 100, maxWidth: 100 }}
-                                    value={gKgLipids}
-                                    stepHoldDelay={500}
-                                    stepHoldInterval={100}
-                                    precision={2}
-                                    min={0.01}
-                                    step={0.01}
-                                    onChange={(val: any) => { setGKgLipids(val) }}
-                                /></td>
-                            </tr>
-                            <tr>
-                                <td>Carbohidratos</td>
-                                <td>{verifyIsNaN(percentageCarbohydrates())}</td>
-                                <td>{verifyIsNaN(kcCarbohydrates())}</td>
-                                <td>{verifyIsNaN(kcCarbohydrates() / 4)}</td>
-                                <td>{verifyIsNaN(kcCarbohydrates() / 4 / weight)}</td>
-                            </tr>
-                            <tr>
-                                <td>Total</td>
-                                <td>{verifyIsNaN(percentageCarbohydrates() + percentageLipids() + percentageProtein())}</td>
-                                <td>{verifyIsNaN(kc())}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                </Paper>
-            </Box>
-        </Stack>
+                            <td><Text sx={{ maxWidth: 50 }}> {verifyIsNaN(percentageProtein())} </Text></td>
+                            <td><Text sx={{ maxWidth: 50 }}>{verifyIsNaN(kcProtein())}</Text></td>
+                            <td> <Text sx={{ maxWidth: 50 }}>{verifyIsNaN(gramProtein())}</Text> </td>
+                            <td><NumberInput variant="filled" sx={{ maxWidth: 65 }}
+                                value={gKgProtein}
+                                stepHoldDelay={500}
+                                stepHoldInterval={100}
+                                precision={2}
+                                min={0.01}
+                                step={0.01}
+                                onChange={(val: any) => { setGKgProtein(val) }}
+                            /></td>
+                        </tr>
+                        <tr>
+                            <td>Lipidos</td>
+
+                            <td> {verifyIsNaN(percentageLipids())} </td>
+                            <td>{verifyIsNaN(kcLipids())}</td>
+                            <td> {verifyIsNaN(gramLipids())} </td>
+                            <td><NumberInput variant="filled" sx={{ maxWidth: 65 }}
+                                value={gKgLipids}
+                                stepHoldDelay={500}
+                                stepHoldInterval={100}
+                                precision={2}
+                                min={0.01}
+                                step={0.01}
+                                onChange={(val: any) => { setGKgLipids(val) }}
+                            /></td>
+                        </tr>
+                        <tr>
+                            <td>Carbohidratos</td>
+                            <td>{verifyIsNaN(percentageCarbohydrates())}</td>
+                            <td>{verifyIsNaN(kcCarbohydrates())}</td>
+                            <td>{verifyIsNaN(kcCarbohydrates() / 4)}</td>
+                            <td>{verifyIsNaN(kcCarbohydrates() / 4 / weight)}</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>{verifyIsNaN(percentageCarbohydrates() + percentageLipids() + percentageProtein())}</td>
+                            <td>{verifyIsNaN(kc())}</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </Paper>
+        </Box>
+
     )
 }
 

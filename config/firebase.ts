@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+
 const firebaseConfig = {
-    apiKey: "AIzaSyCXA6TtpPCpUDNYh9FUulLtXGP4dnCstO4",
+  apiKey: "AIzaSyCXA6TtpPCpUDNYh9FUulLtXGP4dnCstO4",
   authDomain: "smaedb-b59df.firebaseapp.com",
   databaseURL: "https://smaedb-b59df-default-rtdb.firebaseio.com",
   projectId: "smaedb-b59df",
