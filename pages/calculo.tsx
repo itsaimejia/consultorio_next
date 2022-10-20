@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { IconPercentage, IconScaleOutline } from '@tabler/icons';
 import TablePerGKg from '../components/TablePerGKg';
 import TablePerPercentage from '../components/TablePerPercentage';
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { Layout } from '../components/Layout';
 
 const Calculo = () => {
@@ -18,13 +18,8 @@ const Calculo = () => {
 
     return (
         <Layout>
-            <Stack align='center' spacing="xl" >
-                <Box sx={{ '@media (max-width: 768px)': {
-          width: '100%',
-                display: 'flex'
-        },
-        maxWidth: '500px'
-              }}>
+            <Stack spacing="xl" >
+                <Box sx={{ maxWidth: 500 }} >
                     <Paper shadow="xs" radius="md" p="lg" withBorder>
                         <Text weight={700}>Información</Text>
                         <Space h="xs" />
@@ -83,12 +78,7 @@ const Calculo = () => {
                     </Paper>
                 </Box>
 
-                <Box sx={{ '@media (max-width: 768px)': {
-          width: '100%',
-                display: 'flex'
-        },
-        maxWidth: '500px'
-              }}>
+                <Box sx={{ maxWidth: 500 }}>
                     <Tabs variant="outline" defaultValue="per-percentage">
                         <Tabs.List>
                             <Tabs.Tab value="per-percentage" icon={<IconPercentage size={14} />}>Por porcentage</Tabs.Tab>

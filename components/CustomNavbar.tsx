@@ -16,17 +16,6 @@ const useStyles = createStyles((theme) => ({
         borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
             }`,
     },
-
-    '@media screen and (min-width:100px) and (max-width:765px)': {
-        links:{
-            width: '100%',
-            display: 'block'
-        },
-        footer: {
-            display: 'flex',
-            alignItems: 'center'
-        }
-       }
 }))
 const CustomNavbar = () => {
     const { classes } = useStyles();
