@@ -113,7 +113,7 @@ const SingIn = () => {
                             <Button disabled leftIcon={<IconBrandFacebook />}>Facebook</Button>
                         </Group>
 
-                        {error.includes('Contraseña') ? (<Notification title="Olvidaste tu contraseña?" onClose={() => setResetPassword(false)}>
+                        {error.includes('Contraseña') ? (<Notification title="Olvidaste tu contraseña?" >
                             <Button variant="subtle" radius="xs" size="xs" disabled compact onClick={() => setResetPassword(true)}>
                                 Recuperar contraseña
                             </Button>
