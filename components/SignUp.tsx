@@ -1,11 +1,14 @@
-import { Button, Center, createStyles, Divider, Space, Stack, Title, Input, Group, Text, Anchor, PasswordInput, TextInput } from '@mantine/core'
+import { Button, createStyles, Divider, Space, Stack, Center, Title, Group, Text, PasswordInput, TextInput, Alert, ActionIcon, Tooltip, Notification } from '@mantine/core'
 import { useForm } from '@mantine/form';
-import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler/icons';
+import { IconAt, IconLockOpen, IconAlertCircle, IconArrowBackUp } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useAuth } from '../context/AuthContext';
+import SingIn from './SignIn';
+import { useState } from 'react';
 
-const useStyles = createStyles((theme, getRef) => ({
+
+const useStyles = createStyles(() => ({
     container: {
         margin: 0,
         padding: 0,
@@ -13,7 +16,6 @@ const useStyles = createStyles((theme, getRef) => ({
         height: '100%'
     },
     form: {
-        height: 410,
         width: 400,
         backgroundColor: 'rgba(155, 150, 150, 0.13)',
         position: 'absolute',
@@ -31,7 +33,10 @@ const useStyles = createStyles((theme, getRef) => ({
 const SingUp = () => {
 
     const router = useRouter()
-    const { user, login, logout, createUser } = useAuth()
+    const { createUser } = useAuth()
+    const [backToSignin, setBackToSignin] = useState(false)
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const form = useForm({
         initialValues: {
             email: '',
@@ -39,52 +44,76 @@ const SingUp = () => {
         },
 
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            email: (value) => ((/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(value) && value.trim().length != 0) ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa un correo válido" color="red" radius="md" variant="outline">
+                {'Ejemplo: correo@dominio.com'}
+            </Alert>)),
+            password: (value) => (value.trim().length >= 5 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa una contraseña" color="red" radius="md" variant="outline">
+                El campo no puede estar vacio
+            </Alert>))
         },
     });
 
-    const handleRegister = async (e: any) => {
+    const handleRegister = async () => {
+        if (!form.validate().hasErrors) {
+            await createUser(form.values.email.toLowerCase(), form.values.password).then((result: any) => {
+            }).catch((err: any) => {
+                console.log(Object.values(err)[0])
+                if (Object.values(err)[0] === 'auth/email-already-in-use') {
+                    setError('El correo ya se encuentra registrado')
+                }
+                if (Object.values(err)[0] === 'auth/user-not-found') {
+                    setError('Usuario no encontrado')
+                }
+            });
+            setLoading(false)
 
-        try {
-            const res = await createUser(form.values.email, form.values.password)
-            console.log(res)
-            router.push('/')
-
-
-        } catch (err) {
-            console.log(err)
         }
-
     }
-    const { classes } = useStyles();
-    return <div className={classes.container}>
-        <div className={classes.form}>
-            <form onSubmit={(e) => handleRegister(e)}>
-                <Stack>
-                    <Center><Title order={3} sx={(theme) => ({
-                        color: theme.colorScheme === 'dark' ? 'white' : 'black',
-                    })}>Crear nueva cuenta</Title></Center>
-                    <Divider />
-                    <Space />
-                    <TextInput
-                        label='Correo'
-                        withAsterisk
-                        icon={<IconAt />}
-                        placeholder="Correo"
-                        radius="xs"
-                        size="md"
-                        {...form.getInputProps('email')}
-                    />
-                    <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
-                    <Space />
-                    <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleRegister(e)}>
-                        Registrar
-                    </Text></Button>
-                </Stack>
-            </form>
 
-        </div>
-    </div>
+    const { classes } = useStyles()
+
+    return <>
+        {backToSignin ? (<SingIn />) : (<div className={classes.container}>
+            <div className={classes.form}>
+                <form onSubmit={(e) => e.preventDefault()}>
+                    <Stack>
+                        <Group>
+                            <Tooltip label='Regresar a inicio de sesion'>
+                                <ActionIcon onClick={() => setBackToSignin(true)}>
+                                    <IconArrowBackUp size={18} />
+                                </ActionIcon>
+                            </Tooltip>
+                            <Center><Title order={3} sx={(theme) => ({
+                                color: theme.colorScheme === 'dark' ? 'white' : 'black',
+                            })}>Registrarse</Title></Center>
+                        </Group>
+                        <Divider />
+                        <Space />
+                        <TextInput
+                            label='Ingresa un correo'
+                            withAsterisk
+                            icon={<IconAt />}
+                            placeholder="correo@ejemplo.com"
+                            radius="xs"
+                            size="md"
+                            {...form.getInputProps('email')}
+                        />
+                        <PasswordInput label='Ingresa una contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
+                        {error.trim().length === 0 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Error al registrarse" color="red">
+                            {error}
+
+                        </Alert>)}
+                        <Space />
+                        <Button color={'green'} onClick={() => handleRegister()}><Text size="sm" weight={500} >
+                            Registrar
+                        </Text></Button>
+
+                    </Stack>
+                </form>
+
+            </div>
+        </div>)}
+    </>
 }
 
 export default SingUp

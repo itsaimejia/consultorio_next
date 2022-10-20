@@ -7,6 +7,7 @@ import {
     createStyles,
 } from '@mantine/core'
 import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -27,10 +28,15 @@ interface UserButtonProps extends UnstyledButtonProps {
 }
 
 export function UserButton({ image, name, ...others }: UserButtonProps) {
+
+    const router = useRouter()
     const { user, logout } = useAuth()
     const { classes } = useStyles();
 
-    return <UnstyledButton className={classes.user} {...others} onClick={() => { logout() }}>
+    return <UnstyledButton className={classes.user} {...others} onClick={() => {
+        logout()
+        router.push('/')
+    }}>
         <Group>
             <Avatar src={image} radius="xl" />
             <div style={{ flex: 1 }}>

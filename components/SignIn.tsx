@@ -1,23 +1,29 @@
-import { Button, Center, createStyles, Divider, Space, Stack, Title, TextInput, Group, Text, Anchor, PasswordInput } from '@mantine/core'
-import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook } from '@tabler/icons';
+import { Button, Center, createStyles, Divider, Space, Stack, Title, TextInput, Group, Text, Anchor, PasswordInput, Alert, Notification } from '@mantine/core'
+import { IconAt, IconLockOpen, IconBrandGmail, IconBrandFacebook, IconAlertCircle } from '@tabler/icons';
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
 import { useForm } from '@mantine/form'
 import router, { useRouter } from 'next/router'
 import SingUp from './SignUp';
+import ResePasswordDialog from './ResetPasswordDialog';
 
 const useStyles = createStyles(() => ({
-    container: {
-        margin: 0,
-        padding: 0,
-        width: '100%',
-        height: '100%'
+    body:{
+        height: '100vh',
+        display:'flex',
+        alignItems: 'center',
+        backgroundImage: `url(https://thefoodtech.com/wp-content/uploads/2021/05/Dia-de-la-nutricion.jpg)`,
+        backgroundRepeat: 'repeat-x',
+        backgroundSize: 'cover'
+        
+    },
+    button:{
+        backgroundColor: 'rgba(226, 149, 120 )',
     },
     form: {
-        height: 510,
         width: 400,
-        backgroundColor: 'rgba(155, 150, 150, 0.13)',
+        backgroundColor: 'rgba(51,51,51,0.602)',
         position: 'absolute',
         transform: 'translate(-50%, -50%)',
         top: '50%',
@@ -29,6 +35,10 @@ const useStyles = createStyles(() => ({
         padding: '20px 35px'
 
     },
+    button2:{
+        backgroundColor: 'rgba(0, 109, 119 )',
+    }
+   
 }))
 
 
@@ -38,6 +48,7 @@ const SingIn = () => {
     const { classes } = useStyles()
     const [register, setRegister] = useState(false)
     const [error, setError] = useState('')
+    const [resetPassword, setResetPassword] = useState(false)
     const form = useForm({
         initialValues: {
             email: '',
@@ -45,28 +56,44 @@ const SingIn = () => {
         },
 
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            email: (value) => ((/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(value) && value.trim().length != 0) ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa un correo válido" color="red" radius="md" variant="outline">
+                {'Ejemplo: correo@dominio.com'}
+            </Alert>)),
+            password: (value) => (value.trim().length >= 5 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Ingresa una contraseña válida" color="red" radius="md" variant="outline">
+                Debe incluir mínimo 5 carácteres
+            </Alert>))
         },
     });
 
-    /**
-     * 
-     * @param e: event
-     */
-    const handleLogin = async (e: any) => {
-        await login(form.values.email, form.values.password).then((result: any) => {
-            console.log(result)
-            router.push('/')
-        }).catch((err: any) => {
-            console.log(err)
+    const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
+            handleLogin()
+        }
+    }
 
-        });
+    const handleLogin = async () => {
+        if (!form.validate().hasErrors) {
+            await login(form.values.email.toLowerCase(), form.values.password).then((result: any) => {
+                console.log(result)
+                router.push('/')
+            }).catch((err: any) => {
+                console.log(Object.values(err)[0])
+                if (Object.values(err)[0] === 'auth/wrong-password') {
+                    setError('Contraseña incorrecta')
+
+                }
+                if (Object.values(err)[0] === 'auth/user-not-found') {
+                    setError('Usuario no encontrado')
+                }
+            });
+        }
     }
 
     return <>
-        {register ? (<SingUp />) : (<div className={classes.container}>
+        {register ? (<SingUp />) : (
+        <body className={classes.body}>
             <div className={classes.form}>
-                <form onSubmit={(e) => handleLogin(e)}>
+                <form onSubmit={(e) => e.preventDefault()}>
                     <Stack>
                         <Center><Title order={3} sx={(theme) => ({
                             color: theme.colorScheme === 'dark' ? 'white' : 'black',
@@ -74,47 +101,43 @@ const SingIn = () => {
                         <Divider />
                         <Space />
                         <TextInput
-                            error={error}
                             label='Correo'
                             withAsterisk
                             icon={<IconAt />}
-                            placeholder="Correo"
+                            placeholder="correo@dominio.com"
                             radius="xs"
                             size="md"
+                            onKeyPress={keyDownHandler}
                             {...form.getInputProps('email')}
                         />
-                        <PasswordInput
+                        <PasswordInput label='Contraseña' withAsterisk icon={<IconLockOpen />} radius='xs' size="md" placeholder="Ingresa una contraseña" {...form.getInputProps('password')} onKeyPress={keyDownHandler} />
 
-                            label='Contraseña'
-                            withAsterisk
-                            icon={<IconLockOpen />} radius='xs' size="md" placeholder="Contraseña" {...form.getInputProps('password')} />
                         <Space />
-                        <Button color={'green'}><Text size="sm" weight={500} onClick={(e) => handleLogin(e)}>
+                        {error.trim().length === 0 ? null : (<Alert icon={<IconAlertCircle size={16} />} title="Error al ingresar" color="red">
+                            {error}
+                        </Alert>)}
+                        <Button className={classes.button} onClick={() => handleLogin()}><Text size="sm" weight={500}>
                             Ingresar
                         </Text></Button>
                         <Group position="apart" grow mb={5}>
                             <Button disabled color={'red'} leftIcon={<IconBrandGmail />}>Gmail</Button>
                             <Button disabled leftIcon={<IconBrandFacebook />}>Facebook</Button>
                         </Group>
-                        <Anchor<'a'>
-                            href="#"
-                            onClick={(event) => event.preventDefault()}
-                            sx={(theme) => ({
-                                paddingTop: 2,
-                                color: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
-                                fontWeight: 500,
-                                fontSize: theme.fontSizes.xs,
-                            })}>
-                            ¿Olvidaste tu contraseña?
-                        </Anchor>
+
+                        {error.includes('Contraseña') ? (<Notification title="Olvidaste tu contraseña?" onClose={() => setResetPassword(false)}>
+                            <Button variant="subtle" radius="xs" size="xs" disabled compact onClick={() => setResetPassword(true)}>
+                                Recuperar contraseña
+                            </Button>
+                        </Notification>) : null}
+
                         <Divider />
-                        <Button color={'blue'}><Text size="sm" weight={500} onClick={() => setRegister(true)}>
+                        <Button className={classes.button2} onClick={() => setRegister(true)}><Text size="sm" weight={500} >
                             Crear nueva cuenta
                         </Text></Button>
                     </Stack>
                 </form>
             </div>
-        </div>)}
+        </body>)}
     </>
 }
 
