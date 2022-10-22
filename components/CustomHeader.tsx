@@ -4,15 +4,12 @@ import { useAuth } from "../context/AuthContext"
 import { localStorageMethods } from "../classes/localStorageMethods"
 import { useState } from 'react';
 import { UserButton } from "./UserButton";
-const CustomHeader = ({ opened, setOpened, colorS, setColorS }: { opened: boolean, setOpened: any, colorS: string, setColorS: any }) => {
+const CustomHeader = ({ opened, setOpened }: { opened: boolean, setOpened: any }) => {
     const theme = useMantineTheme()
 
     const { user } = useAuth()
 
-    const colorTheme = () => {
-        localStorageMethods.setItem('theme', { "color": theme.colorScheme === 'dark' ? 'light' : 'dark' })
-        setColorS(theme.colorScheme === 'dark' ? 'light' : 'dark')
-    }
+
     return <Header height={70} p="md">
         <Group position="apart" >
             <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
@@ -31,7 +28,6 @@ const CustomHeader = ({ opened, setOpened, colorS, setColorS }: { opened: boolea
                     image="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80"
                     name={user.email}
                 />
-                <Tooltip label={theme.colorScheme === 'dark' ? 'Modo claro' : 'Modo oscuro'}><ActionIcon onClick={() => colorTheme()} variant="transparent"><IconBrightness size={25} /></ActionIcon></Tooltip>
             </Group>
         </Group>
     </Header>

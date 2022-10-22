@@ -11,12 +11,12 @@ export const Layout = ({ children }: { children: any }) => {
 
     const { user } = useAuth()
     const [opened, setOpened] = useState(false)
-    const [colorS, setColorS] = useState(localStorageMethods.getItem('theme')['color'])
-    return <MantineProvider theme={{ colorScheme: colorS }} withGlobalStyles withNormalizeCSS >
+    
+    return <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS >
         {user ? (<AppShell
             navbarOffsetBreakpoint="sm"
             navbar={<CustomNavbar opened={opened} />}
-            header={<CustomHeader opened={opened} setOpened={setOpened} colorS={colorS} setColorS={setColorS} />}
+            header={<CustomHeader opened={opened} setOpened={setOpened}  />}
         >
             {children}
         </AppShell>) : (<SingIn />)}
