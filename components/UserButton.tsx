@@ -11,10 +11,7 @@ import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
     user: {
-
-
         color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-
         '&:hover': {
             backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
         },
@@ -30,8 +27,7 @@ export function UserButton({ image, name, ...others }: UserButtonProps) {
 
     const router = useRouter()
     const { user, logout } = useAuth()
-    const { classes } = useStyles();
-
+    const { classes } = useStyles()
     return <UnstyledButton className={classes.user} {...others} onClick={() => {
         logout()
         router.push('/')
