@@ -4,13 +4,14 @@ import { AppProps } from 'next/app'
 import CustomHeader from '../components/CustomHeader';
 import React from 'react'
 import { AuthContextProvider, useAuth } from '../context/AuthContext';
+import { localStorageMethods } from '../classes/localStorageMethods';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
-    <AuthContextProvider>
-      <Component {...pageProps} />
-    </AuthContextProvider>
-  </MantineProvider>
+
+  return <AuthContextProvider>
+    <Component {...pageProps} />
+  </AuthContextProvider>
+
 
 
 }

@@ -41,8 +41,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     const sendResetPassword = async (email: string) => {
         return sendPasswordResetEmail(auth, email)
     }
-
-
     return <AuthContext.Provider value={{ user, login, logout, createUser, sendResetPassword }}>{user === null ? (loading ? <LoadingOverlay visible={loading} overlayBlur={2} /> : <Home />) : children}</AuthContext.Provider>
 }
 

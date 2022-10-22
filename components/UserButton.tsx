@@ -11,9 +11,8 @@ import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
     user: {
-        display: 'block',
-        width: '100%',
-        padding: theme.spacing.md,
+
+
         color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
 
         '&:hover': {

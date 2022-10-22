@@ -1,10 +1,9 @@
 
-import { Box, Center, Divider, Group, NumberInput, Paper, SegmentedControl, Space, Stack, Tabs, Text } from '@mantine/core';
+import { Box, Card, Divider, NumberInput, Paper, SegmentedControl, Space, Stack, Tabs, Text } from '@mantine/core';
 import { useState } from 'react';
 import { IconPercentage, IconScaleOutline } from '@tabler/icons';
 import TablePerGKg from '../components/TablePerGKg';
 import TablePerPercentage from '../components/TablePerPercentage';
-import { useAuth } from '../context/AuthContext';
 import { Layout } from '../components/Layout';
 
 const Calculo = () => {
@@ -18,73 +17,68 @@ const Calculo = () => {
 
     return (
         <Layout>
-            <Stack align='center' spacing="xl" >
-                <Box sx={{
-                    '@media (max-width: 768px)': {
-                        width: '100%',
-                        display: 'flex'
-                    },
-                    maxWidth: '500px'
-                }}>
-                    <Paper shadow="xs" radius="md" p="lg" withBorder>
-                        <Text weight={700}>Información</Text>
-                        <Space h="xs" />
-                        <Divider />
-                        <Space h="sm" />
-                        <Text weight={500}>Sexo:</Text>
-                        <SegmentedControl
-                            fullWidth
-                            value={sex}
-                            onChange={setSex}
-                            data={[
-                                { label: 'Femenino', value: 'fem' },
-                                { label: 'Masculino', value: 'masc' },
+            <Stack>
+                <Card shadow="sm" p="lg" radius="md" withBorder sx={{ maxWidth: '600px' }}>
+                    
 
-                            ]}
-                        />
-                        <NumberInput label='Peso (Kgs)' value={weight} min={3}
-                            stepHoldDelay={500}
-                            stepHoldInterval={100}
-                            onChange={(val) => setWeight(val ?? 0)} />
-                        <NumberInput label='Estatura (Mts)' value={height} precision={2}
-                            min={0.50}
-                            step={0.01}
-                            max={2.5}
-                            stepHoldDelay={500}
-                            stepHoldInterval={100} onChange={(val) => setHeight(val ?? 0)} />
-                        <NumberInput label='Edad' stepHoldDelay={500} stepHoldInterval={100} min={18} value={age} onChange={(val) => setAge(val ?? 0)} />
-                        <Text weight={500}>Factor actividad:</Text>
-                        <SegmentedControl
-                            fullWidth
-                            value={activityFactor}
-                            onChange={setActivityFactor}
-                            data={[
-                                { label: 'Sedentario', value: 'SEDENTARIO' },
-                                { label: 'Ligero', value: 'LIGERO' },
-                                { label: 'Moderado', value: 'MODERADO' },
-                                { label: 'Activo', value: 'ACTIVO' },
-                                { label: 'Vigoroso', value: 'VIGOROSO' },
+                    <Text weight={700}>Información</Text>
+                    <Space h="xs" />
+                    <Divider />
+                    <Space h="sm" />
+                    <Text weight={500}>Sexo:</Text>
+                    <SegmentedControl
+                        size="sm"
+                        fullWidth
+                        value={sex}
+                        onChange={setSex}
+                        data={[
+                            { label: 'Femenino', value: 'fem' },
+                            { label: 'Masculino', value: 'masc' },
 
-                            ]}
-                        />
-                        <Text weight={500}>Formula:</Text>
-                        <SegmentedControl
-                            fullWidth
-                            value={formula}
-                            onChange={setFormula}
-                            data={[
-                                { label: 'Harris-Benedict', value: 'harris-benedict' },
-                                { label: 'Mifflin ST-Jeor', value: 'mifflin' },
-                                { label: 'OMS', value: 'oms' },
-                                { label: 'Owen', value: 'owen' },
-                                { label: 'Valencia', value: 'valencia' },
+                        ]}
+                    />
+                    <NumberInput label='Peso (Kgs)' value={weight} min={3}
+                        stepHoldDelay={500}
+                        stepHoldInterval={100}
+                        onChange={(val) => setWeight(val ?? 0)} />
+                    <NumberInput label='Estatura (Mts)' value={height} precision={2}
+                        min={0.50}
+                        step={0.01}
+                        max={2.5}
+                        stepHoldDelay={500}
+                        stepHoldInterval={100} onChange={(val) => setHeight(val ?? 0)} />
+                    <NumberInput label='Edad' stepHoldDelay={500} stepHoldInterval={100} min={18} value={age} onChange={(val) => setAge(val ?? 0)} />
+                    <Text weight={500}>Factor actividad:</Text>
+                    <SegmentedControl
+                        size="sm"
+                        fullWidth
+                        value={activityFactor}
+                        onChange={setActivityFactor}
+                        data={[
+                            { label: 'Sedentario', value: 'SEDENTARIO' },
+                            { label: 'Ligero', value: 'LIGERO' },
+                            { label: 'Moderado', value: 'MODERADO' },
+                            { label: 'Activo', value: 'ACTIVO' },
+                            { label: 'Vigoroso', value: 'VIGOROSO' },
 
-                            ]}
-                        />
-                    </Paper>
-                </Box>
+                        ]}
+                    />
+                    <Text weight={500}>Formula:</Text>
+                    <SegmentedControl
+                        size="sm"
+                        fullWidth
+                        value={formula}
+                        onChange={setFormula}
+                        data={[
+                            { label: 'Harris-Benedict', value: 'harris-benedict' },
+                            { label: 'Mifflin ST-Jeor', value: 'mifflin' },
+                            { label: 'OMS', value: 'oms' },
+                            { label: 'Owen', value: 'owen' },
+                            { label: 'Valencia', value: 'valencia' },
 
-
+                        ]}
+                    />
+                </Card>
                 <Box sx={{
                     '@media (max-width: 768px)': {
                         width: '100%',

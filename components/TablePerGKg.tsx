@@ -24,7 +24,6 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
     const verifyIsNaN = (f: any) => isNaN(f) ? '---' : f.toFixed(2)
 
     return (
-
         <Box sx={{ maxWidth: 600 }} mx="auto" >
             <Paper shadow="xs" radius="md" p="lg" withBorder>
                 <Text weight={700}>Por g/Kg</Text>
@@ -48,7 +47,7 @@ const TablePerGKg = ({ sex, weight, height, age, factor, formula }: { sex: any, 
                             <td><Text sx={{ maxWidth: 50 }}> {verifyIsNaN(percentageProtein())} </Text></td>
                             <td><Text sx={{ maxWidth: 50 }}>{verifyIsNaN(kcProtein())}</Text></td>
                             <td> <Text sx={{ maxWidth: 50 }}>{verifyIsNaN(gramProtein())}</Text> </td>
-                            <td><NumberInput variant="filled" sx={{ maxWidth: 65 }}
+                            <td><NumberInput variant="filled" sx={{ maxWidth: 65, minWidth: 65 }}
                                 value={gKgProtein}
                                 stepHoldDelay={500}
                                 stepHoldInterval={100}

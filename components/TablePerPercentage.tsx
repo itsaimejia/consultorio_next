@@ -76,7 +76,7 @@ const TablePerPercentage = ({ sex, weight, height, age, factor, formula }: { sex
                             <tr>
                                 <td>Lípidos</td>
                                 <td><NumberInput value={percentageLipids} min={1}
-                                    variant="filled" sx={{ maxWidth: 60 }}
+                                    variant="filled" sx={{ maxWidth: 60, minWidth: 60 }}
                                     stepHoldDelay={500}
                                     stepHoldInterval={100}
                                     max={98 - percentageProtein + percentageCarbohydrates()}
